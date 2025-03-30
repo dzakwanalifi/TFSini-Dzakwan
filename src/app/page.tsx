@@ -40,8 +40,6 @@ const bankAccounts = [
   { id: 'rek-sea', name: 'SeaBank (535)', number: '901163435084', logo: '/logos/seabank.png' },
   { id: 'rek-line', name: 'LINE Bank / Hana Bank (484)', number: '15752208430', logo: '/logos/linebank.png' },
   { id: 'rek-blu', name: 'Blu / BCA Digital (501)', number: '000000157351', logo: '/logos/blu.png' },
-  { id: 'rek-aladin', name: 'Bank Aladin (947)', number: '50483763178', logo: '/logos/aladin.png' },
-  { id: 'rek-superbank', name: 'Superbank (562)', number: '030007674168', logo: '/logos/superbank.png' },
 ];
 
 const leadBank = {
