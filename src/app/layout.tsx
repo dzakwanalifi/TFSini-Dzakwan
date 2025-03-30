@@ -14,8 +14,8 @@ const fontSpaceGrotesk = FontSpaceGrotesk({
 });
 
 export const metadata: Metadata = {
-  title: "TFSini - Info Pembayaran",
-  description: "Kumpulan rekening dan e-wallet untuk kemudahan transfer.",
+  title: "TFSini - Info Transfer",
+  description: "Kumpulan rekening dan e-wallet biar gampang transfer.",
 };
 
 export default function RootLayout({
