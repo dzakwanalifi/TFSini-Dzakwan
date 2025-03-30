@@ -5,13 +5,9 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Copy, Check, Download, HomeIcon, Share2, MessageCircle } from "lucide-react";
-import { toast } from "sonner"; // Removed Toaster import as it's now in layout
+import { Copy, Check, Download, HomeIcon, Share2 } from "lucide-react";
+import { toast } from "sonner";
 import React, { useState } from 'react';
 import { AccountCard } from "@/components/account-card";
 
