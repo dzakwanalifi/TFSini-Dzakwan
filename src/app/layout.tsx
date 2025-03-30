@@ -24,11 +24,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // Add suppressHydrationWarning to handle any minor text differences
-    <html lang="id" suppressHydrationWarning className={fontSpaceGrotesk.variable}>
+    // Using suppressHydrationWarning to silence warnings about class differences
+    <html lang="id" suppressHydrationWarning className={cn(fontSpaceGrotesk.variable, "light")}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* Script to prevent flash of wrong theme - use simple approach without manipulating classList */}
+        <script 
+          dangerouslySetInnerHTML={{ 
+            __html: `
+              (function() {
+                try {
+                  document.documentElement.dataset.theme = 'light';
+                } catch (e) {}
+              })()
+            `
+          }}
+        />
       </head>
       <body
         className={cn(
@@ -36,7 +48,6 @@ export default function RootLayout({
           fontSpaceGrotesk.className
         )}
       >
-        {/* Simplify the provider props since they're now defined in the component */}
         <ThemeProvider>
           {children}
           <Toaster position="top-center" richColors />

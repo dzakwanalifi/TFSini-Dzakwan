@@ -3,18 +3,19 @@
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
-import { useEffect } from "react";
 
 /**
  * Simple wrapper around next-themes ThemeProvider with default options
  */
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  useEffect(() => {
-    // Set light mode as default
-    document.documentElement.classList.remove('dark');
-    document.documentElement.classList.add('light');
+  // Skip any server-side DOM manipulation to avoid hydration issues
+  const [mounted, setMounted] = React.useState(false);
+  
+  // Only attempt to manipulate DOM after component is mounted on client
+  React.useEffect(() => {
+    setMounted(true);
     
-    // Add styling for toast in a safer way
+    // Toast styling
     const style = document.createElement('style');
     style.textContent = `
       [data-sonner-toast] {
@@ -28,17 +29,19 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
     document.head.appendChild(style);
     
     return () => {
-      document.head.removeChild(style);
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
     };
   }, []);
 
-  // Use next-themes forcedTheme for consistent rendering
   return (
-    <NextThemesProvider 
-      {...props} 
-      forcedTheme="light" 
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="light"
       enableSystem={false}
       disableTransitionOnChange
+      {...props}
     >
       {children}
     </NextThemesProvider>

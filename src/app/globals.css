@@ -43,7 +43,9 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Prevent FOUC */
 :root {
+  color-scheme: light;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -77,6 +79,11 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --primary-rgb: 52, 52, 52; /* This is a rough RGB equivalent for oklch(0.205 0 0) */
+}
+
+/* Let ThemeProvider manage the theme */
+html.light {
+  color-scheme: light;
 }
 
 .dark {

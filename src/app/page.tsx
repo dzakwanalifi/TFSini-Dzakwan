@@ -6,17 +6,36 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
-import { Copy, Check, Download, HomeIcon, Share2 } from "lucide-react";
+import { 
+  CopyIcon, 
+  CheckIcon, 
+  DownloadIcon, 
+  HomeIcon, 
+  Share2Icon, 
+  SearchIcon, 
+  XIcon, 
+  FacebookIcon,
+  TwitterIcon, 
+  MailIcon, 
+  LinkIcon 
+} from "lucide-react";
 import { toast } from "sonner";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AccountCard } from "@/components/account-card";
+import { Input } from "@/components/ui/input";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // --- DATA AKUN ---
 const accountOwner = "Muhammad Dzakwan Alifi";
 
 // Simple list of bank accounts without grouping
 const bankAccounts = [
-  { id: 'rek-bsi', name: 'Bank Syariah Indonesia (451)', number: '7268898829', logo: '/logos/bsi.png' },
+  { id: 'rek-bsi', name: 'Bank Syariah Indonesia / BSI (451)', number: '7268898829', logo: '/logos/bsi.png' },
   { id: 'rek-jago1', name: 'Bank Jago (542)', number: '100537378868', logo: '/logos/jago.png' },
   { id: 'rek-sea', name: 'SeaBank (535)', number: '901163435084', logo: '/logos/seabank.png' },
   { id: 'rek-line', name: 'LINE Bank / Hana Bank (484)', number: '15752208430', logo: '/logos/linebank.png' },
@@ -50,6 +69,22 @@ const eWallets = {
 
 export default function Home() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filteredAccounts, setFilteredAccounts] = useState(bankAccounts);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  
+  // Filter accounts when search query changes
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setFilteredAccounts(bankAccounts);
+    } else {
+      const filtered = bankAccounts.filter(account => 
+        account.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        account.number.includes(searchQuery)
+      );
+      setFilteredAccounts(filtered);
+    }
+  }, [searchQuery]);
 
   const handleCopy = async (textToCopy: string, id: string, description: string = "Nomor") => {
     try {
@@ -105,6 +140,33 @@ export default function Home() {
       }
     }
   };
+  
+  // Share to specific platforms
+  const shareToFacebook = () => {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+    window.open(url, '_blank', 'width=600,height=400');
+  };
+  
+  const shareToTwitter = () => {
+    const text = "Berikut rekening dan e-wallet untuk transfer. TFSini!";
+    const url = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
+    window.open(url, '_blank', 'width=600,height=400');
+  };
+  
+  const shareByEmail = () => {
+    const subject = "TFSini - Info Pembayaran";
+    const body = `Halo,\n\nBerikut link informasi rekening dan e-wallet untuk transfer:\n${window.location.href}\n\nTerima kasih!`;
+    window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+  };
+  
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success("Link berhasil disalin!");
+    } catch (err) {
+      toast.error("Gagal menyalin link.");
+    }
+  };
 
   // Create pre-filled WhatsApp message
   const defaultMessage = encodeURIComponent("Assalamualaikum Dzakwan, aku udah transfer THR-nya yaa.");
@@ -112,22 +174,45 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start px-4 py-12 md:px-8 md:py-16 lg:py-20 text-foreground">
-      {/* Toaster moved to layout.tsx */}
-
       {/* Header Area */}
       <div className="w-full max-w-lg text-center mb-10 md:mb-12 relative">
         <div className="absolute top-0 right-0">
-          {/* Updated Share button to be consistent with other icon buttons */}
-          <Button 
-            variant="outline" 
-            size="icon" 
-            onClick={handleShare} 
-            title="Bagikan Halaman Ini"
-            className="h-9 w-9" // Updated to match e-wallet copy button size
-          >
-            <Share2 className="h-5 w-5" /> {/* Updated icon size to match */}
-            <span className="sr-only">Bagikan Halaman Ini</span>
-          </Button>
+          {/* Enhanced Share Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                title="Bagikan Halaman Ini"
+                className="h-9 w-9"
+              >
+                <Share2Icon className="h-5 w-5" />
+                <span className="sr-only">Bagikan Halaman Ini</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={shareToFacebook} className="cursor-pointer">
+                <FacebookIcon className="mr-2 h-4 w-4" />
+                <span>Facebook</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={shareToTwitter} className="cursor-pointer">
+                <TwitterIcon className="mr-2 h-4 w-4" />
+                <span>Twitter</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={shareByEmail} className="cursor-pointer">
+                <MailIcon className="mr-2 h-4 w-4" />
+                <span>Email</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={copyLink} className="cursor-pointer">
+                <LinkIcon className="mr-2 h-4 w-4" />
+                <span>Salin Link</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleShare} className="cursor-pointer">
+                <Share2Icon className="mr-2 h-4 w-4" />
+                <span>Bagikan</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <h1 className="text-4xl font-extrabold mb-5 tracking-tight lg:text-5xl text-primary">
@@ -152,20 +237,71 @@ export default function Home() {
 
         {/* === Bagian Rekening Bank === */}
         <section>
-          <h2 className="text-xl font-semibold mb-4 text-center md:text-left">
-            Rekening Bank
-          </h2>
-          <div className="space-y-3">
-            {bankAccounts.map((account) => (
-              <AccountCard
-                key={account.id}
-                account={account}
-                ownerName={accountOwner}
-                copiedId={copiedId}
-                onCopy={handleCopy}
-              />
-            ))}
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-center md:text-left">
+              Rekening Bank
+            </h2>
+            
+            {/* Search Toggle Button */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setIsSearching(!isSearching)}
+              className="h-8 w-8"
+            >
+              {isSearching ? <XIcon className="h-4 w-4" /> : <SearchIcon className="h-4 w-4" />}
+            </Button>
           </div>
+          
+          {/* Search Input - Only visible when searching */}
+          {isSearching && (
+            <div className="mb-4 relative">
+              <Input
+                type="text"
+                placeholder="Cari bank atau nomor rekening..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pr-8"
+              />
+              {searchQuery && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 absolute right-2 top-1/2 -translate-y-1/2"
+                  onClick={() => setSearchQuery('')}
+                >
+                  <XIcon className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          )}
+          
+          {/* Display count of filtered results */}
+          {isSearching && filteredAccounts.length !== bankAccounts.length && (
+            <p className="text-sm text-muted-foreground mb-3">
+              Menampilkan {filteredAccounts.length} dari {bankAccounts.length} rekening
+            </p>
+          )}
+          
+          {/* Display No Results message if needed */}
+          {filteredAccounts.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <p>Tidak ada rekening yang sesuai dengan pencarian.</p>
+              <p className="text-sm mt-2">Coba gunakan kata kunci lain.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {filteredAccounts.map((account) => (
+                <AccountCard
+                  key={account.id}
+                  account={account}
+                  ownerName={accountOwner}
+                  copiedId={copiedId}
+                  onCopy={handleCopy}
+                />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* === Bagian Rekening Internasional (Lead Bank) === */}
@@ -218,9 +354,9 @@ export default function Home() {
                     disabled={copiedId === `${leadBank.idPrefix}-routing`}
                   >
                     {copiedId === `${leadBank.idPrefix}-routing` ? (
-                      <Check className="h-4 w-4 text-green-600" />
+                      <CheckIcon className="h-4 w-4 text-green-600" />
                     ) : (
-                      <Copy className="h-4 w-4" />
+                      <CopyIcon className="h-4 w-4" />
                     )}
                     <span className="sr-only">Salin Routing</span>
                   </Button>
@@ -246,9 +382,9 @@ export default function Home() {
                     disabled={copiedId === `${leadBank.idPrefix}-account`}
                   >
                     {copiedId === `${leadBank.idPrefix}-account` ? (
-                      <Check className="h-4 w-4 text-green-600" />
+                      <CheckIcon className="h-4 w-4 text-green-600" />
                     ) : (
-                      <Copy className="h-4 w-4" />
+                      <CopyIcon className="h-4 w-4" />
                     )}
                     <span className="sr-only">Salin Account</span>
                   </Button>
@@ -308,9 +444,9 @@ export default function Home() {
                   className="h-9 w-9"
                 >
                   {copiedId === eWallets.id ? (
-                    <Check className="h-5 w-5 text-green-600" />
+                    <CheckIcon className="h-5 w-5 text-green-600" />
                   ) : (
-                    <Copy className="h-5 w-5" />
+                    <CopyIcon className="h-5 w-5" />
                   )}
                   <span className="sr-only">{copiedId === eWallets.id ? "Tersalin!" : "Salin"}</span>
                 </Button>
@@ -349,7 +485,7 @@ export default function Home() {
               </p>
               <a href="/qris-dzakwan.jpg" download={`QRIS_${accountOwner}.jpg`}>
                 <Button variant="outline" size="sm">
-                  <Download className="mr-2 h-4 w-4" />
+                  <DownloadIcon className="mr-2 h-4 w-4" />
                   Unduh QRIS
                 </Button>
               </a>

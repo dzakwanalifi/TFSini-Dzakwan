@@ -5,7 +5,7 @@ import {
     Card,
     CardContent,
 } from "@/components/ui/card";
-import { Copy, Check, HomeIcon } from "lucide-react";
+import { CopyIcon, CheckIcon, HomeIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 // Tipe Data Akun (Sama)
@@ -98,7 +98,7 @@ export function AccountCard({ account, ownerName, copiedId, onCopy }: AccountCar
                         title={isCopied ? "Tersalin!" : "Salin nomor"}
                         className="h-9 w-9" // Ukuran tetap
                     >
-                        {isCopied ? ( <Check className="h-5 w-5 text-green-600" /> ) : ( <Copy className="h-5 w-5" /> )}
+                        {isCopied ? ( <CheckIcon className="h-5 w-5 text-green-600" /> ) : ( <CopyIcon className="h-5 w-5" /> )}
                         <span className="sr-only">{isCopied ? "Tersalin!" : "Salin"}</span>
                     </Button>
                 </div>
