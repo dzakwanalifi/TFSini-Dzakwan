@@ -1,7 +1,5 @@
 # TFSini - Info Pembayaran
 
-![TFSini Screenshot](public/screenshot.png)
-
 ## About
 
 TFSini ("Transfer Sini" or "Transfer Here") is a simple yet elegant web application designed to make it easy for people to share their payment information for receiving transfers, particularly for Eid al-Fitr gifts (THR - Tunjangan Hari Raya) in Indonesia.
@@ -38,8 +36,8 @@ The app displays bank accounts, e-wallets, and QRIS codes in a clean, user-frien
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/tfthr.git
-   cd tfthr
+   git clone https://github.com/dzakwanalifi/TFSini.git
+   cd TFSini
    ```
 
 2. Install dependencies
@@ -69,7 +67,7 @@ To customize the payment information, edit the data objects in `src/app/page.tsx
 ```typescript
 // Bank accounts
 const bankAccounts = [
-  { id: 'rek-bsi', name: 'Bank Syariah Indonesia (451)', number: '7268898829', logo: '/logos/bsi.png' },
+  { id: 'rek-bsi', name: 'Bank Syariah Indonesia (451)', number: '7*********', logo: '/logos/bsi.png' },
   // Add more accounts as needed
 ];
 
@@ -77,7 +75,7 @@ const bankAccounts = [
 const eWallets = {
   id: 'ewallet-all',
   name: 'E-Wallet',
-  number: '081225644468',
+  number: '08**********',
   logos: [
     { name: 'ShopeePay', path: '/logos/shopeepay.png' },
     // Add more e-wallets as needed
