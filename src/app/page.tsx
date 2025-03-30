@@ -111,7 +111,7 @@ export default function Home() {
   };
 
   // Create pre-filled WhatsApp message
-  const defaultMessage = encodeURIComponent("Assalamualaikum, saya sudah transfer THR-nya yaa. Mohon dicek. Terima kasih!");
+  const defaultMessage = encodeURIComponent("Assalamualaikum Dzakwan, aku udah transfer THR-nya yaa.");
   const whatsappLink = `https://wa.me/6281225644468?text=${defaultMessage}`;
 
   return (
@@ -366,7 +366,7 @@ export default function Home() {
       {/* Thank You Message - Added between QRIS and WhatsApp button */}
       <div className="w-full max-w-lg mt-6 mb-2">
         <p className="text-sm text-emerald-600 dark:text-emerald-400 text-center italic">
-          Terima kasih banyak atas perhatian dan THR-nya! Semoga rezekinya dilancarkan dan diberkahi. 🙏
+        Jazakumullah khairan katsiran atas perhatian dan THR-nya! Semoga rezekinya dilancarkan dan diberkahi. 🙏
         </p>
       </div>
 
