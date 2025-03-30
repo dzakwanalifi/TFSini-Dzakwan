@@ -8,13 +8,8 @@ import { type ThemeProviderProps } from "next-themes/dist/types";
  * Simple wrapper around next-themes ThemeProvider with default options
  */
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // Skip any server-side DOM manipulation to avoid hydration issues
-  const [mounted, setMounted] = React.useState(false);
-  
-  // Only attempt to manipulate DOM after component is mounted on client
+  // We're using useEffect without relying on a mounted state
   React.useEffect(() => {
-    setMounted(true);
-    
     // Toast styling
     const style = document.createElement('style');
     style.textContent = `

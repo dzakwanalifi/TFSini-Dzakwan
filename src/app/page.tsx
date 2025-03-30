@@ -163,7 +163,7 @@ export default function Home() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       toast.success("Link berhasil disalin!");
-    } catch (err) {
+    } catch (_) {
       toast.error("Gagal menyalin link.");
     }
   };
